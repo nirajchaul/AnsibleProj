@@ -1,0 +1,25 @@
+---
+- name: create users
+  hosts: webservers
+  vars:
+          grpname: devopsStudy
+
+  become: true
+  tasks:
+          - name: create '{{grpname}}' group
+            group:
+                    name: '{{grpname}}'
+                    state: present
+
+
+          - name : create users from list
+            user:
+                    name: '{{item.uname}}'
+                    uid: '{{item.id}}'
+                    group: '{{grpname}}'
+                    state: present
+            loop:
+                    - uname: nabin
+                      id: 1234
+                    - uname: niraj
+                      id: 1356

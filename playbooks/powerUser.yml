@@ -1,0 +1,15 @@
+---
+- name: Edit sudoers file
+  hosts: ubuntu
+  become: true
+  tasks:
+          - name: create tomcat user
+            user:
+                  name: tomcat
+                  state: present
+
+          - name: add to sudoers file
+            ansible.builtin.lineinfile:
+                          path: /etc/sudoers.d/90-cloud-init-users
+                          insertafter: EOF
+                          line: 'tomcat ALL=(ALL) NOPASSWD:ALL'

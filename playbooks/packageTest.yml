@@ -1,0 +1,17 @@
+---
+- name: Install Packages
+  hosts: webservers
+  vars:
+          grpname: devopsStudy
+          usrname: nabin
+
+  become: true
+  tasks:
+          - name: install package
+            package:
+                    name: "{{item}}"
+                    state: present
+
+            loop:
+                    - tree
+                    - java 

@@ -1,0 +1,30 @@
+---
+- name: Install webservers
+  hosts: webservers
+  become: true
+  tasks:
+          - name: install web for RH
+            yum:
+                    name: '{{item}}'
+                    state: present
+            loop:
+                    - httpd
+                    - java                      
+            when: ansible_os_family == 'RedHat'
+            
+          - name: install web for Debian
+            apt:
+                    name: '{{item}}'
+                    state: present
+                    update_cache: yes
+            loop:
+                    - apache2
+                    - openjdk-8-jre
+            when: ansible_os_family == 'Debian'
+
+          - name: start httpd
+            ansible.builtin.systemd:
+                    state: started
+                    name: httpd
+                    enabled: yes  
+            when: ansible_os_family == "RedHat"  
